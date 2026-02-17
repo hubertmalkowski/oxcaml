@@ -4937,12 +4937,12 @@ module Modality = struct
       | Monadic ax -> Monadic.is_constant ax t
       | Comonadic ax -> Comonadic.is_constant ax t
 
-    let eq (type a) (ax : a Axis.t) (a : a) (b : a) : bool =
+    let le (type a) (ax : a Axis.t) (a : a) (b : a) : bool =
       match ax, a, b with
       | Monadic ax, Join_const a, Join_const b ->
-        Value.Monadic.Const.Per_axis.(le ax a b && le ax b a)
+        Value.Monadic.Const.Per_axis.le ax a b
       | Comonadic ax, Meet_const a, Meet_const b ->
-        Value.Comonadic.Const.Per_axis.(le ax a b && le ax b a)
+        Value.Comonadic.Const.Per_axis.le ax a b
 
     let print (type a) (ax : a Axis.t) ppf (t : a) =
       match ax, t with
