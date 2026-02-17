@@ -74,12 +74,12 @@ Warning 213: This contention is overriden by contended later.
 Line 2, characters 29-34:
 2 |     val x : string @@ global local unique aliased once many uncontended contended
                                  ^^^^^
-Warning 219 [redundant-modality]: This local modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 Line 3, characters 15-26:
 3 |       portable nonportable
                    ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This nonportable modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module type S = sig val x : string @@ many aliased contended end
 |}]
@@ -160,7 +160,6 @@ module Module_type_of_error = struct
     let x = fun x -> ignore !y; x
   end
 end
-(* CR layouts v2.8: fix principal case. Internal ticket 5111 *)
 [%%expect{|
 Lines 8-12, characters 33-5:
  8 | .................................struct
@@ -250,7 +249,6 @@ end
 issue. See
 https://github.com/oxcaml/oxcaml/pull/3922#discussion_r2059000469
 *)
-(* CR layouts v2.8: fix principal case. Internal ticket 5111 *)
 [%%expect{|
 module Module_type_nested :
   sig
@@ -320,7 +318,6 @@ module Inclusion_fail = struct
     end
 end
 (* For this to type check, M has to be at [contended] *)
-(* CR layouts v2.8: fix principal case. Internal ticket 5111 *)
 [%%expect{|
 module Inclusion_fail :
   sig module M : sig val x : string ref end @@ contended end @@ stateless
@@ -333,7 +330,6 @@ module Inclusion_fail = struct
       let x @ contended = ref "hello"
   end
 end
-(* CR layouts v2.8: fix principal case. Internal ticket 5111 *)
 [%%expect{|
 Lines 4-6, characters 22-5:
 4 | ......................struct
@@ -420,12 +416,11 @@ module Inclusion_match = struct
     end
     let () = uncontended_use M.x
 end
-(* CR layouts v2.8: fix principal case. Internal ticket 5111 *)
 [%%expect{|
 Line 3, characters 27-38:
 3 |         val x : int ref @@ uncontended
                                ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This uncontended modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module Inclusion_match : sig module M : sig val x : int ref end end @@
   stateless
@@ -694,7 +689,7 @@ end
 Line 2, characters 28-39:
 2 |   val foo : int @@ portable uncontended
                                 ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This uncontended modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module M : sig val foo : int @@ portable end @@ stateless
 |}]
@@ -712,7 +707,7 @@ end
 Line 3, characters 24-35:
 3 |   val t : t @@ portable uncontended
                             ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This uncontended modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module M : sig type t val t : t @@ portable end @@ stateless
 |}]
@@ -730,7 +725,7 @@ end
 Line 2, characters 36-47:
 2 |   val t : [`Foo | `Bar] @@ portable uncontended
                                         ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This uncontended modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module M : sig val t : [ `Bar | `Foo ] @@ portable end @@ stateless
 |}]
@@ -744,7 +739,7 @@ end
 Line 2, characters 69-80:
 2 |   val t : [`Foo | `Bar of 'a -> 'a | `Baz of string ref] @@ portable uncontended
                                                                          ^^^^^^^^^^^
-Warning 219 [redundant-modality]: This uncontended modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 Lines 3-5, characters 6-3:
 3 | ......struct
@@ -1036,7 +1031,7 @@ end
 Line 4, characters 24-32:
 4 |   val baz : 'a -> 'a @@ portable
                             ^^^^^^^^
-Warning 219 [redundant-modality]: This portable modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 module type T =
   sig

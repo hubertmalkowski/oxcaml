@@ -153,7 +153,7 @@ type t =
   | Use_during_borrowing                    (* 216 *)
   | Useless_lpoly                           (* 217 *)
   | Lpoly_in_letrec                         (* 218 *)
-  | Redundant_modality of string            (* 219 *)
+  | Redundant_modality                      (* 219 *)
 
 (* If you remove a warning, leave a hole in the numbering.  NEVER change
    the numbers of existing warnings.
@@ -254,7 +254,7 @@ let number = function
   | Use_during_borrowing -> 216
   | Useless_lpoly -> 217
   | Lpoly_in_letrec -> 218
-  | Redundant_modality _ -> 219
+  | Redundant_modality -> 219
 ;;
 (* DO NOT REMOVE the ;; above: it is used by
    the testsuite/ests/warnings/mnemonics.mll test to determine where
@@ -1386,10 +1386,8 @@ let message = function
   | Lpoly_in_letrec ->
       "\"poly_\" has no effect in recursive bindings, which do not support \
        layout polymorphism. Consider using a regular \"let rec\" instead."
-  | Redundant_modality modality ->
-    Printf.sprintf
-      "This %s modality is redundant."
-      modality
+  | Redundant_modality ->
+    "This modality is redundant."
 ;;
 
 let nerrors = ref 0

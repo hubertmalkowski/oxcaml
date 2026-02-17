@@ -261,7 +261,7 @@ Error: Found a aliased value where a unique value was expected
 *)
 
 (* arrow types *)
-type r = local_ string @ unique once -> string @ local unique once
+type r = local_ string @ unique once -> unique_ string @ local once
 [%%expect{|
 type r = string @ local unique once -> string @ local unique once
 |}]
@@ -296,12 +296,12 @@ Error: The locality axis has already been specified.
 |}]
 
 (* Mixing legacy and new modes *)
-type r = local_ string @ unique once -> string
+type r = local_ unique_ once_ string -> string
 [%%expect{|
 type r = string @ local unique once -> string
 |}]
 
-type r = local_ string @ unique once portable contended -> string
+type r = local_ unique_ once_ string @ portable contended -> string
 [%%expect{|
 type r = string @ local unique once portable contended -> string
 |}]
@@ -379,7 +379,7 @@ type r = {
 Line 2, characters 24-31:
 2 |   global_ x : string @@ aliased
                             ^^^^^^^
-Warning 219 [redundant-modality]: This aliased modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 type r = { x : string @@ global; }
 |}]
@@ -391,7 +391,7 @@ type r = {
 Line 2, characters 16-23:
 2 |   x : string @@ aliased global many
                     ^^^^^^^
-Warning 219 [redundant-modality]: This aliased modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 type r = { x : string @@ global many; }
 |}]
@@ -408,7 +408,7 @@ Warning 213: This uniqueness is overriden by aliased later.
 Line 2, characters 36-43:
 2 |   x : string @@ aliased global many aliased
                                         ^^^^^^^
-Warning 219 [redundant-modality]: This aliased modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 type r = { x : string @@ global many; }
 |}]
@@ -418,7 +418,7 @@ type r = Foo of string @@ global aliased many
 Line 1, characters 33-40:
 1 | type r = Foo of string @@ global aliased many
                                      ^^^^^^^
-Warning 219 [redundant-modality]: This aliased modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 type r = Foo of string @@ global many
 |}]
@@ -432,22 +432,22 @@ type r = {
 Line 2, characters 24-30:
 2 |   mutable x : string @@ global unyielding aliased many
                             ^^^^^^
-Warning 219 [redundant-modality]: This global modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 Line 2, characters 31-41:
 2 |   mutable x : string @@ global unyielding aliased many
                                    ^^^^^^^^^^
-Warning 219 [redundant-modality]: This unyielding modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 Line 2, characters 50-54:
 2 |   mutable x : string @@ global unyielding aliased many
                                                       ^^^^
-Warning 219 [redundant-modality]: This many modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 Line 2, characters 42-49:
 2 |   mutable x : string @@ global unyielding aliased many
                                               ^^^^^^^
-Warning 219 [redundant-modality]: This aliased modality is redundant.
+Warning 219 [redundant-modality]: This modality is redundant.
 
 type r = { mutable x : string; }
 |}]
