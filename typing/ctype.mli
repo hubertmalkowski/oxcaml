@@ -281,6 +281,13 @@ val apply:
            set to true.
            Exception [Cannot_apply] is raised in case of failure. *)
 
+val instance_declaration_for_application:
+        Env.t -> type_expr list -> type_declaration -> type_declaration
+        (* Freshens a type declaration and applies it to actual type-constructor
+           arguments. The returned declaration's [type_params] are the copied
+           actual arguments.
+           Exception [Cannot_apply] is raised in case of failure. *)
+
 val reduce_head: expand_eval:bool -> Env.t -> type_expr -> type_expr
 (** Exhaustively beta-reduce head-position quotes, splices and quote-evals.
     If [expand_eval] is true, expands [Predef]'s [eval]s into [Tquote_eval]
