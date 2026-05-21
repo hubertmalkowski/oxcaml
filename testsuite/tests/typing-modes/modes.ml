@@ -263,7 +263,11 @@ Error: Found a aliased value where a unique value was expected
 (* arrow types *)
 type r = local_ string @ unique once -> unique_ string @ local once
 [%%expect{|
-type r = string @ local unique once -> string @ local unique once
+Line 1, characters 40-54:
+1 | type r = local_ string @ unique once -> unique_ string @ local once
+                                            ^^^^^^^^^^^^^^
+Error: The type constructor "string" expects 0 argument(s),
+       but is here applied to 1 argument(s)
 |}]
 
 type r = local_ string * y:string @ unique once -> local_ string * w:string @ once
@@ -298,12 +302,20 @@ Error: The locality axis has already been specified.
 (* Mixing legacy and new modes *)
 type r = local_ unique_ once_ string -> string
 [%%expect{|
-type r = string @ local unique once -> string
+Line 1, characters 16-36:
+1 | type r = local_ unique_ once_ string -> string
+                    ^^^^^^^^^^^^^^^^^^^^
+Error: The type constructor "string" expects 0 argument(s),
+       but is here applied to 1 argument(s)
 |}]
 
 type r = local_ unique_ once_ string @ portable contended -> string
 [%%expect{|
-type r = string @ local unique once portable contended -> string
+Line 1, characters 16-36:
+1 | type r = local_ unique_ once_ string @ portable contended -> string
+                    ^^^^^^^^^^^^^^^^^^^^
+Error: The type constructor "string" expects 0 argument(s),
+       but is here applied to 1 argument(s)
 |}]
 
 type r = string @ local unique once portable contended -> string
