@@ -658,7 +658,8 @@ let sort_dedup_modalities ~warn l =
   in
   l |> List.stable_sort compare |> dedup ~on_dup
 
-let transl_modalities_with_default ~maturity ~default annots =
+let transl_modalities_with_default ?(allow_redundant_staticity = false)
+    ~maturity ~default annots =
   let modalities_loc =
     match List.map (fun { loc; _ } -> loc) annots with
     | [] -> Location.none
@@ -668,6 +669,13 @@ let transl_modalities_with_default ~maturity ~default annots =
   (* axes listed in the order of implication. *)
   let modalities_with_loc = sort_dedup_modalities ~warn:true annots in
   let open Modality in
+  let redundant_modality_allowed (Atom (ax, a)) =
+    allow_redundant_staticity
+    &&
+    match ax, a with
+    | Monadic Staticity, Join_const Static -> true
+    | _ -> false
+  in
   (* - default is applied before explicit modalities.
      - explicit modalities can override default.
      - For the same axis, later modalities overrides earlier modalities. *)
@@ -676,6 +684,7 @@ let transl_modalities_with_default ~maturity ~default annots =
       (fun m { txt = Atom (ax, a) as t; loc } ->
         let current_a = Const.proj ax m in
         if Misc.Le_result.equal ~le:(Per_axis.le ax) a current_a
+           && not (redundant_modality_allowed t)
         then Location.prerr_warning loc Warnings.Redundant_modality;
         let m = Const.set ax a m in
         List.fold_left

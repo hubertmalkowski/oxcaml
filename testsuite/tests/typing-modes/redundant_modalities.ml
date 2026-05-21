@@ -140,6 +140,20 @@ Warning 219 [redundant-modality]: This modality is redundant.
 module type S = sig val x : int @@ portable end
 |}]
 
+(* Nested signature top-level [@@ static] remains redundant *)
+module type S = sig
+  module type T = sig @@ static
+  end
+end
+[%%expect{|
+Line 2, characters 25-31:
+2 |   module type T = sig @@ static
+                             ^^^^^^
+Warning 219 [redundant-modality]: This modality is redundant.
+
+module type S = sig module type T = sig end end
+|}]
+
 (* In sig @@ contended, writing contended again is redundant *)
 module type S = sig @@ contended
   val x : int @@ contended
