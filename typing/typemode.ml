@@ -683,8 +683,9 @@ let transl_modalities_with_default ?(allow_redundant_staticity = false)
     List.fold_left
       (fun m { txt = Atom (ax, a) as t; loc } ->
         let current_a = Const.proj ax m in
-        if Misc.Le_result.equal ~le:(Per_axis.le ax) a current_a
-           && not (redundant_modality_allowed t)
+        if
+          Misc.Le_result.equal ~le:(Per_axis.le ax) a current_a
+          && not (redundant_modality_allowed t)
         then Location.prerr_warning loc Warnings.Redundant_modality;
         let m = Const.set ax a m in
         List.fold_left
