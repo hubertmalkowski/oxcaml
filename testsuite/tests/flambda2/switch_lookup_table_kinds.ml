@@ -101,7 +101,7 @@ match_naked_int64:
   ret
 |}]
 
-let match_naked_nativeint (t : t) : nativeint# =
+let match_naked_nativeint (t : t) : nativeint_u =
   match t with
   | A -> #5n
   | B -> #10n
